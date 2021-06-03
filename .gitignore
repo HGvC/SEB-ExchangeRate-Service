@@ -356,3 +356,6 @@ MigrationBackup/
 
 # Health checks
 healthchecksdb
+
+# Logger files
+Logs/

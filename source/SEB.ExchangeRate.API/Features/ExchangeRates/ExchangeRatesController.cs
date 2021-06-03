@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using SEB.ExchangeRate.Application.ExchangeRates;
+using Serilog;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -15,6 +16,7 @@ namespace SEB.ExchangeRate.API.Features.ExchangeRates
     public class ExchangeRatesController : ControllerBase
     {
         private readonly IMediator _mediator;
+        private readonly ILogger _logger = Log.Logger.ForContext<ExchangeRatesController>();
 
         public ExchangeRatesController(IMediator mediator)
         {
@@ -25,6 +27,8 @@ namespace SEB.ExchangeRate.API.Features.ExchangeRates
         [ProducesResponseType(StatusCodes.Status200OK)]
         public async Task<ActionResult<IEnumerable<GetExchangeRatesResponse>>> GetAsync([FromQuery] GetExchangeRatesRequest request)
         {
+            _logger.Information("Fetching exchange rates");
+
             var query = new GetExchangeRates(request.Date);
 
             var result = await _mediator.Send(query);
